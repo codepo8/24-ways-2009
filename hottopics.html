@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>Hot Topics example (HTML/JavaScript)</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/base/base.css" type="text/css">
+</head>
+<body>
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner"><h1>Hot Topics example (HTML/JavaScript)</h1></div>
+  <div id="bd" role="main">
+    <ul id="hottopics"><li>Loading...</li></ul>
+  </div>
+  <div id="ft" role="contentinfo"><p></p></div>
+</div>
+<script type="text/javascript" charset="utf-8">
+function hottopics(o){
+  var res = o.query.results.Result,
+      all = res.length,
+      topics = {},
+      out = [],
+      html = '',
+      i=0;
+  /* create hash from topics to prevent repetition */    
+  for(i=0;i<all;i++){
+    topics[res[i]] = res[i];
+  };
+  for(i in topics){
+    out.push(i);
+  };
+  html = '<li>' + out.join('</li><li>') + '</li>';
+  document.getElementById('hottopics').innerHTML = html;
+};
+</script>
+<script type="text/javascript" src="http://query.yahooapis.com/v1/public/yql?q=select%20content%20from%20search.termextract%20where%20context%20in%20(select%20content%20from%20html%20where%20url%3D%22http%3A%2F%2Fnews.bbc.co.uk%22%20and%20xpath%3D%22%2F%2Ftable%5B%40width%3D800%5D%2F%2Fa%22)&format=json&callback=hottopics"></script>
+</body>
+</html>
